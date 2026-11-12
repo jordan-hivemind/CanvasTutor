@@ -1,0 +1,26 @@
+[Unit]
+Description=Canvas Tutor
+After=network.target
+
+[Service]
+User=tutor
+Group=tutor
+WorkingDirectory=/opt/canvas-tutor
+Environment=NODE_ENV=production
+Environment=PORT=8795
+Environment=DATA_DIR=/var/lib/canvas-tutor/data
+Environment=CAS_PYTHON=/var/lib/canvas-tutor/venv/bin/python
+Environment=TTS_PYTHON=/var/lib/canvas-tutor/tts-venv/bin/python
+Environment=KOKORO_DIR=/var/lib/canvas-tutor/kokoro
+Environment=WHISPER_DIR=/var/lib/canvas-tutor/whisper
+ExecStart=/usr/bin/node server-dist/index.js --prod
+Restart=always
+RestartSec=3
+# hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/canvas-tutor /opt/canvas-tutor
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
